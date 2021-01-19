@@ -60,8 +60,7 @@ class LoginFragment: Fragment() {
         if(requestCode == RC_SIGN_IN){
             val loginSuccessful = googleClient.loginSuccessful(data)
             if (loginSuccessful){
-                val action = LoginFragmentDirections.actionLoginFragmentToProfileFragment()
-                NavHostFragment.findNavController(this).navigate(action)
+                navigateToProfile()
             }
         }
 
@@ -71,13 +70,15 @@ class LoginFragment: Fragment() {
 
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        googleClient.signOut()
         val account = googleClient.getLoggedInAccount()
         if (account != null){
-            Toast.makeText(context!!, "account existe", Toast.LENGTH_LONG).show()
-        }else{
-            Toast.makeText(context!!, "NO account", Toast.LENGTH_LONG).show()
+            navigateToProfile()
         }
         super.onStart()
+    }
+
+    private fun navigateToProfile(){
+        val action = LoginFragmentDirections.actionLoginFragmentToProfileFragment()
+        NavHostFragment.findNavController(this).navigate(action)
     }
 }

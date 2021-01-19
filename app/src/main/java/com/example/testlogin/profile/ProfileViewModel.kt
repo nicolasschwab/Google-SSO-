@@ -20,10 +20,23 @@ class ProfileViewModel(account : GoogleSignInAccount): ViewModel() {
     val photoUrl: LiveData<Uri?>
         get() = _photoUrl
 
+    private val _signOut = MutableLiveData<Boolean>()
+    val signOut: LiveData<Boolean>
+        get() = _signOut
+
+    fun signOutSuccessfully(){
+        _signOut.value= false
+    }
+
+    fun signOut(){
+        _signOut.value = true
+    }
+
     init {
         _name.value = account.displayName.orEmpty()
         _email.value = account.email.orEmpty()
         _photoUrl.value = account.photoUrl
+        _signOut.value= false
     }
 
 }

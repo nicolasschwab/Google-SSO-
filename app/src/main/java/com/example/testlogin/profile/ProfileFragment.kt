@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
 import com.example.testlogin.GoogleClient
 import com.example.testlogin.R
@@ -44,6 +45,18 @@ class ProfileFragment: Fragment() {
             Glide.with(this.activity).load(uri).into(binding.imageView2)
             println(uri.toString())
             binding.imageView2.setImageURI(uri)
+        })
+
+        viewModel.signOut.observe(viewLifecycleOwner, Observer { shouldSignOut ->
+            shouldSignOut?.let {
+                if (it){
+                    googleClient.signOut()
+                    viewModel.signOutSuccessfully()
+                    val action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment()
+                    NavHostFragment.findNavController(this).navigate(action)
+                }
+            }
+
         })
 
         return binding.root
